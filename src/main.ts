@@ -3,7 +3,7 @@ import './style.css'
 import App from './App.vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import routes from '~pages'
-import { ConfigProvider, showFailToast } from 'vant';
+import { ConfigProvider } from 'vant';
 import 'vant/lib/index.css';
 
 const router = createRouter({
@@ -16,32 +16,3 @@ const router = createRouter({
 })
 
 createApp(App).use(ConfigProvider).use(router).mount('#app')
-
-
-window.onload = function () {
-  socketDemo()
-};
-
-function socketDemo(){
-  let conn;
-  if (window["WebSocket"]) {
-      conn = new WebSocket("ws://localhost:8889/client/public/ws");
-      conn.onerror = function (event) {
-        console.log('Connection error.',event)
-      };
-      conn.onclose = function (event) {
-        console.log('Connection closed.',event)
-      };
-      conn.onopen = function (event) {
-        console.log('Connection opened.',event)
-      };
-      conn.onmessage = function (evt) {
-        let messages = evt.data.split('\n');
-        for (let i = 0; i < messages.length; i++) {
-          console.log(messages[i])
-        }
-      };
-  } else {
-    showFailToast('Your browser does not support WebSockets.')
-  }
-}
